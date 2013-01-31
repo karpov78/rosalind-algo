@@ -21,19 +21,25 @@ pairs = {
 cache = {}
 
 def numOfBondingGraphs(s):
-    if len(s) < 4:
+    len_s = len(s)
+    if len_s <= 4:
         return 1
 
-    if s in cache: return cache[s]
+    if (s) in cache: return cache[s]
 
-    permutations = 1
-    for i in range(len(s) - 4):
-        for j in range(len(s) - 1, i + 3, -1):
+    permutations = 1 # count empty permutation right away
+
+    for i in range(len_s):
+        for j in range(len_s - 1, i + 3, -1):
             if s[j] in pairs[s[i]]:
-                includingLeft = numOfBondingGraphs(s[i: j]) # permutations including left border
-                includingRight = numOfBondingGraphs(s[i + 1: j + 1]) # permutations including right border
-                permutations += (includingLeft + includingRight - 1) * numOfBondingGraphs(s[j:])
+                internal_permutations = numOfBondingGraphs(s[i + 1: j])
+                external_permutations = numOfBondingGraphs(s[j + 1:])
+
+                permutations += internal_permutations * external_permutations
+
+            #    result = (2 if countOuter and s[-1] in pairs[s[0]] else 1) * permutations
     cache[s] = permutations
+    #    print("%s (%s) - %d" % (s, str(countOuter), permutations))
     return permutations
 
 if __name__ == '__main__':
