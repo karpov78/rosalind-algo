@@ -2,16 +2,15 @@ import util
 
 __author__ = 'ekarpov'
 
-s = set()
-while True:
-    l = input()
-    if not l: break
-    s.add(l)
+def build_deBruijin_graph(s):
+    un = s.union({util.reverseComplement(x) for x in s})
+    return [(r[:-1], r[1:]) for r in un]
 
-s_rc = {util.reverseComplement(x) for x in s}
-
-un = s.union(s_rc)
-edges = []
-for r in un:
-    edges.append((r[:-1], r[1:]))
-print('\n'.join([str(x).replace("'", "") for x in sorted(edges)]))
+if __name__ == '__main__':
+    s = set()
+    while True:
+        l = input()
+        if not l: break
+        s.add(l)
+    edges = build_deBruijin_graph(s)
+    print('\n'.join([str(x).replace("'", "") for x in sorted(edges)]))
