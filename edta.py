@@ -12,7 +12,7 @@ def _validate(d, s, t):
         raise Exception("Invalid transformation: expected distance - %d, but was - %d" % (d, count))
 
 
-def _calculateDistanceMatrix(s, t):
+def calculateDistanceMatrix(s, t):
     len_s = len(s)
     len_t = len(t)
     matrix = Matrix(rows=len_s + 1, cols=len_t + 1, format="%3d")
@@ -48,7 +48,7 @@ def _calculateDistanceMatrix(s, t):
 
 
 def editString(s, t):
-    matrix, paths = _calculateDistanceMatrix(s, t)
+    matrix, paths = calculateDistanceMatrix(s, t)
     len_s = len(s)
     len_t = len(t)
 
