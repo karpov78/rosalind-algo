@@ -62,3 +62,12 @@ class Matrix:
 
     def __str__(self):
         return '\n'.join([' '.join([self._format % y for y in x]) for x in self._matrix])
+
+
+def parseIntMatrix(*rows):
+    result = Matrix(len(rows), len(rows[0].split(' ')))
+    for i in range(len(rows)):
+        row = rows[i].split(' ')
+        for j in range(len(row)):
+            result[i, j] = int(row[j])
+    return result
