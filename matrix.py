@@ -4,64 +4,45 @@ class Matrix:
     def __init__(self, rows, cols=None, default=1000000000000, format='%d'):
         self._rows = rows
         self._cols = cols if cols else rows
-        self._matrix = [[default for x in range(self._cols)] for x in range(self._rows)]
+        self._matrix = [default] * (rows * cols)
         self._default = default
         self._format = format
 
+    def index(self, row, col):
+        return row * self._cols + col
+
+    def decode(self, index):
+        x = index % self._cols
+        return x, index - x * self._cols
+
     def isDefault(self, key):
-        return self._matrix[key[0]][key[1]] == self._default
+        return self._matrix[self.index(key[0], key[1])] == self._default
 
     def __len__(self):
-        return len(self._matrix)
+        return self._rows
 
     def __getitem__(self, key):
-        if not type(key) is tuple:
-            raise TypeError("Tuple is expected")
-        if type(key[0]) is int:
-            if type(key[1]) is int:
-                if 0 <= key[0] < self._rows and 0 <= key[1] < self._cols:
-                    return self._matrix[key[0]][key[1]]
-                else:
-                    raise IndexError
-            elif key[1] is None:
-                if 0 <= key[0] < self._rows:
-                    return self._matrix[key[0]]
-                else:
-                    raise IndexError
-        elif key[0] is None and type(key[1]) is int:
-            if 0 <= key[1] < self._cols:
-                new_res = []
-                for i in range(self._cols):
-                    new_res.append(self._matrix[i][key[1]])
-                return new_res
-            else:
-                raise IndexError
+        if type(key) is tuple:
+            return self._matrix[self.index(key[0], key[1])]
+        elif type(key) is int:
+            return self._matrix[key]
         else:
             raise TypeError
 
-
     def __setitem__(self, key, value):
-        if not type(key) is tuple or not type(key[0]) is int or not type(key[1]) is int:
+        if type(key) is tuple:
+            self._matrix[self.index(key[0], key[1])] = value
+        elif type(key) is int:
+            self._matrix[key] = value
+        else:
             raise TypeError
-        self._matrix[key[0]][key[1]] = value
-
-    def __delitem__(self, key):
-        if not type(key) is tuple or not type(key[0]) is int or not type(key[1]) is int:
-            raise TypeError
-        del self._matrix[key[0]]
-        self._rows -= 1
-        for i in range(self._rows):
-            del self._matrix[i][key[1]]
-        self._cols -= 1
-
-    def __getattr__(self, item):
-        if item == 'cols':
-            return self._cols
-        elif item == 'rows':
-            return self._rows
 
     def __str__(self):
-        return '\n'.join([' '.join([self._format % y for y in x]) for x in self._matrix])
+        rows = [''] * self._rows
+        for i in range(self._rows):
+            rows[i] = ' '.join(
+                [self._format % cell for cell in self._matrix[i * self._cols:i * self._cols + self._cols]])
+        return '\n'.join(rows)
 
 
 def parseIntMatrix(*rows):

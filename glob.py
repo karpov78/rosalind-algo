@@ -46,7 +46,7 @@ def _validate(d, s, t):
         raise Exception("Invalid transformation: expected distance - %d, but was - %d" % (d, count))
 
 
-def _calculateDistanceMatrix(s, t):
+def _calculateDistanceMatrix(s, t, gap_weight=GAP_WEIGHT):
     len_s = len(s)
     len_t = len(t)
     matrix = Matrix(rows=len_s + 1, cols=len_t + 1, format="%3d")
@@ -58,11 +58,11 @@ def _calculateDistanceMatrix(s, t):
                 paths[0, 0] = []
                 continue
             if i < 0:
-                matrix[0, j + 1] = matrix[0, j] + GAP_WEIGHT
+                matrix[0, j + 1] = matrix[0, j] + gap_weight
                 paths[0, j + 1] = [] if (0, j) not in paths else paths[0, j] + [(0, j + 1)]
                 continue
             if j < 0:
-                matrix[i + 1, 0] = matrix[i, 0] + GAP_WEIGHT
+                matrix[i + 1, 0] = matrix[i, 0] + gap_weight
                 paths[i + 1, 0] = [] if (i, 0) not in paths else paths[i, 0] + [(i + 1, 0)]
                 continue
             diag = matrix[i, j] + getWeight(s[i], t[j])
@@ -71,8 +71,8 @@ def _calculateDistanceMatrix(s, t):
                 matrix[i + 1, j + 1] = diag
                 paths[i + 1, j + 1] = paths[i, j] + new_step
             else:
-                top = matrix[i, j + 1] + GAP_WEIGHT
-                left = matrix[i + 1, j] + GAP_WEIGHT
+                top = matrix[i, j + 1] + gap_weight
+                left = matrix[i + 1, j] + gap_weight
                 matrix[i + 1, j + 1] = max(top, left, diag)
 
                 if top >= left and top >= diag:
