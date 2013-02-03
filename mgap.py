@@ -1,5 +1,3 @@
-import multiprocessing
-
 from lev_matrix import *
 from timer import Timer
 
@@ -14,10 +12,9 @@ class MaxGapMatrixCell(LevMatrixCell):
 
 
 class MaxGapLevMatrix(LevMatrix):
-    def __init__(self, s, t, lock=None):
+    def __init__(self, s, t):
         super().__init__(s, t, cellFactory=self.createCell,
-            weight=lambda x, y: -1 if x == GAP_SYMBOL or y == GAP_SYMBOL else 1 if x == y else -10000, cleanup=True,
-            lock=lock)
+            weight=lambda x, y: -1 if x == GAP_SYMBOL or y == GAP_SYMBOL else 1 if x == y else -10000, cleanup=True)
 
     def buildCell(self, diag, top, left, x, y):
         if top is None and left is None:
@@ -51,7 +48,6 @@ if __name__ == '__main__':
     s = input()
     t = input()
     with Timer() as perf:
-        lock = multiprocessing.Lock()
-        matrix = MaxGapLevMatrix(s, t, lock=lock)
+        matrix = MaxGapLevMatrix(s, t)
         print(matrix.getLastCell().gaps)
     print(perf)
