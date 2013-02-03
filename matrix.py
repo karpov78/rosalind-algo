@@ -37,6 +37,14 @@ class Matrix:
         else:
             raise TypeError
 
+    def __delitem__(self, key):
+        if type(key) is tuple:
+            self._matrix[self.index(key[0], key[1])] = self._default
+        elif type(key) is int:
+            self._matrix[key] = self._default
+        else:
+            raise TypeError
+
     def __str__(self):
         rows = [''] * self._rows
         for i in range(self._rows):
