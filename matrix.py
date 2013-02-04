@@ -12,7 +12,7 @@ class Matrix:
         return row * self._cols + col
 
     def decode(self, index):
-        x = index % self._cols
+        x = index / self._cols
         return x, index - x * self._cols
 
     def isDefault(self, key):

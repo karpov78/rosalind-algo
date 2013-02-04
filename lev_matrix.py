@@ -112,15 +112,6 @@ class LevMatrix:
             diag = self.cellFactory(x, y, diag.weight + self.weight(self.s[x], self.t[y]), diag)
             return max(pathFromLeft, pathFromTop, diag, key=lambda x: x.weight)
 
-    def getCell(self, index):
-        with self.lock:
-            if index < 0:
-                return None
-            else:
-                while not self.matrix[index] or self.matrix[index] == _IN_PROGRESS:
-                    self.condition.wait()
-                return self.matrix[index]
-
     def _calculateMatrix(self):
         len_s = len(self.s)
         len_t = len(self.t)
