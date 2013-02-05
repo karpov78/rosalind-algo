@@ -10,7 +10,7 @@ def _validate(d, s, t):
             continue
         if i > 0 and t[i] == t[i - 1] == GAP_SYMBOL:
             continue
-        count += getWeight(s[i], t[i])
+        count += getBlosumWeight(s[i], t[i])
         #print("%s -> %s = %d (%d)" % (s[i], t[i], getWeight(s[i], t[i]), count))
     if d != count:
         raise Exception("Invalid transformation: expected distance - %d, but was - %d" % (d, count))
@@ -30,8 +30,8 @@ class GconMatrixCell(LevMatrixCell):
 
 
 class GconMatrix(LevMatrix):
-    def __init__(self, s, t):
-        super(GconMatrix, self).__init__(s, t, self.createCell, weight=lambda a, b: getWeight(a, b))
+    def __init__(self, s, t, weight=lambda a, b: getBlosumWeight(a, b)):
+        super(GconMatrix, self).__init__(s, t, self.createCell, weight)
 
     def calculatePathFromLeft(self, left, x, y):
         if y <= 0:
