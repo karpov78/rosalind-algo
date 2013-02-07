@@ -1,11 +1,21 @@
 /**
  * @author ekarpov
  */
-@SuppressWarnings("unchecked")
 public class Matrix<T> {
     public final int rows;
     public final int cols;
-    public final Object[] matrix;
+    public final T[] matrix;
+    private CellFormatter<T> formatter = new DefaultFormatter<T>();
+
+    public interface CellFormatter<X> {
+        String format(X cell);
+    }
+
+    private static class DefaultFormatter<X> implements CellFormatter<X> {
+        public String format(X cell) {
+            return cell.toString();
+        }
+    }
 
     public static Matrix<Integer> parseIntMatrix(final String... rows) {
         final Matrix<Integer> result = new Matrix<Integer>(rows.length, rows[0].split(" ").length);
@@ -21,7 +31,12 @@ public class Matrix<T> {
     public Matrix(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
-        this.matrix = new Object[rows * cols];
+        //noinspection unchecked
+        this.matrix = (T[]) new Object[rows * cols];
+    }
+
+    public void setFormatter(CellFormatter<T> formatter) {
+        this.formatter = formatter;
     }
 
     public int index(int x, int y) {
@@ -34,11 +49,11 @@ public class Matrix<T> {
     }
 
     public T get(int index) {
-        return (T) matrix[index];
+        return matrix[index];
     }
 
     public T get(int x, int y) {
-        return (T) matrix[index(x, y)];
+        return matrix[index(x, y)];
     }
 
     public void set(int index, T value) {
@@ -65,7 +80,7 @@ public class Matrix<T> {
 
             for (int j = 0; j < cols; j++) {
                 if (j > 0) result.append(' ');
-                result.append(matrix[idx++]);
+                result.append(formatter.format(matrix[idx++]));
             }
         }
         return result.toString();
