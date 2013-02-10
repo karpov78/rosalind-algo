@@ -18,15 +18,24 @@ class Tree:
     def getChildren(self):
         return self.children
 
+    def replaceChild(self, childIdx, newNode):
+        self.children[childIdx] = newNode
+        self._registerNode(newNode)
+
     def _registerNode(self, newNode):
         self.nodes[self.key(newNode.data)] = newNode
         if self.parent: self.parent._registerNode(newNode)
 
     def add(self, node):
-        newNode = Tree(node, self, key=self.key)
-        self.children.append(newNode)
-        self._registerNode(newNode)
-        return newNode
+        if type(node) is Tree:
+            self.children.append(node)
+            self._registerNode(node)
+            return node
+        else:
+            newNode = Tree(node, self, key=self.key)
+            self.children.append(newNode)
+            self._registerNode(newNode)
+            return newNode
 
     def __add__(self, other):
         self.add(other)
@@ -70,6 +79,13 @@ class Tree:
         for c in self.children:
             c.traverse(visitor)
 
+    def toNewick(self, root=True):
+        result = ''
+        if len(self.children) > 0:
+            result += '(' + ','.join([x.toNewick(False) for x in self.children]) + ')'
+        if self.data: result += str(self.data)
+        return result + (';' if root else '')
+
     def getPath(self):
         if self.parent:
             path = self.parent.getPath()
@@ -77,3 +93,6 @@ class Tree:
             return path
         else:
             return [self]
+
+    def getSize(self):
+        return 1 + sum([x.getSize() for x in self.children])

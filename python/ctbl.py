@@ -69,14 +69,21 @@ def traverseNode(values, row, node, hit_value):
         for e in node.edges:
             traverseNode(values, row, e, hit_value)
 
-if __name__ == '__main__':
-    s = input()
-    tree = parseTree(s)
-    #print(tree)
+
+def createCharTable(tree):
     values = tree.getValues()
-    print(' '.join(values))
+    result = set()
     for int_edge in tree.internalEdges:
         row = ['0'] * len(values)
         traverseNode(values, row, int_edge[1], '1')
         #if '@' in row: raise Exception('Invalid row %s' % ''.join(row))
-        print(''.join(row))
+        result.add(''.join(row))
+    return result
+
+
+if __name__ == '__main__':
+    s = input()
+    tree = parseTree(s)
+    values = tree.getValues()
+    print(' '.join(values))
+    print('\n'.join(createCharTable(tree)))
