@@ -24,6 +24,7 @@ class Tree:
 
     def _registerNode(self, newNode):
         self.nodes[self.key(newNode.data)] = newNode
+        newNode.parent = self
         if self.parent: self.parent._registerNode(newNode)
 
     def add(self, node):
