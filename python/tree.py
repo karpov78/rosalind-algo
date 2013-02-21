@@ -4,7 +4,6 @@ class Tree:
         self.children = []
         self.parent = parent
         self.key = key
-        self.nodes = {key(data): self}
 
     def getParent(self):
         return self.parent
@@ -23,9 +22,7 @@ class Tree:
         self._registerNode(newNode)
 
     def _registerNode(self, newNode):
-        self.nodes[self.key(newNode.data)] = newNode
         newNode.parent = self
-        if self.parent: self.parent._registerNode(newNode)
 
     def add(self, node):
         if type(node) is Tree:
@@ -40,16 +37,6 @@ class Tree:
 
     def __add__(self, other):
         self.add(other)
-
-    def find(self, key):
-        if key in self.nodes:
-            return self.nodes[key]
-        else:
-            print("No node found for key %s" % key)
-            raise KeyError(key)
-
-    def __getitem__(self, item):
-        return self.find(item)
 
     def moveChildrenTo(self, tree):
         tree.children = self.children
