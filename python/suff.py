@@ -15,7 +15,7 @@ class Edge:
     def printEdge(self, indent=''):
         res = indent + self.value
         for c in self.end.edges:
-            res += '\n' + c.printEdge()#'\t' + indent)
+            res += '\n' + c.printEdge('\t' + indent)
         return res
 
     def __str__(self):
@@ -25,6 +25,12 @@ class Edge:
 class Node:
     def __init__(self):
         self.edges = []
+
+    def power(self):
+        result = len(self.edges)
+        for e in self.edges:
+            result += e.end.power()
+        return result
 
     def add(self, value):
         for e in self.edges:
@@ -78,9 +84,12 @@ class Marker:
 
 
 class SuffixTree:
-    def __init__(self):
+    def __init__(self, s=None):
         self.root = Node()
         self.markers = []
+        if s:
+            for c in s:
+                self.append(c)
 
     def append(self, s):
         for m in self.markers:
@@ -121,22 +130,10 @@ def getAllSuffixes(s):
         res.add(s[i:])
     return res
 
-root = SuffixTree()
-s = input()
-for c in s:
-    root.append(c)
+if __name__ == '__main__':
+    s = input()
+    root = SuffixTree(s)
+    print(root)
 
-print(root)
-
-allSuffixes = getAllSuffixes(s)
-treeSuffixes = root.getAllSuffixes()
-
-#if allSuffixes.union(treeSuffixes) != treeSuffixes.intersection(allSuffixes):
-#    print("Failure: expected %d suffixes, but was %d" % (len(allSuffixes), len(treeSuffixes)))
-#else:
-#    print("Success!!")
-
-#def visit(n):
-#    print(n.getValue())
-#root.traverse(enter=visit, exit=lambda n: n)
-#print(TERMINAL)
+    allSuffixes = getAllSuffixes(s)
+    treeSuffixes = root.getAllSuffixes()
