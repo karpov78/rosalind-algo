@@ -1,5 +1,6 @@
+import sys
+
 TERMINAL = '*'
-__author__ = 'ekarpov'
 
 class Edge:
     def __init__(self, e, value):
@@ -84,12 +85,15 @@ class Marker:
 
 
 class SuffixTree:
-    def __init__(self, s=None):
+    def __init__(self, s=None, progress=False):
         self.root = Node()
         self.markers = []
         if s:
-            for c in s:
-                self.append(c)
+            for k in range(len(s)):
+                if progress and k % 10 == 0:
+                    sys.stdout.write('\r%.3f%%' % (k * 100 / len(s)))
+                    sys.stdout.flush()
+                self.append(s[k])
 
     def append(self, s):
         for m in self.markers:
