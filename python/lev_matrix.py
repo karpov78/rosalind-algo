@@ -1,5 +1,4 @@
 import sys
-import multiprocessing
 
 from python.matrix import Matrix, parseIntMatrix
 
@@ -69,56 +68,30 @@ def getPAMWeight(a, b, gap_weight=GAP_WEIGHT):
 
 
 class LevMatrixCell:
-    def __init__(self, x, y, weight, s, t, prevCell=None, suppressPrefixes=False):
+    def __init__(self, x, y, weight):
         self.x = x
         self.y = y
         self.weight = weight
-        self.isOnTopOf = lambda other: self.y == other.y
-        self.isLeftTo = lambda other: self.x == other.x
-
-        if not suppressPrefixes:
-            try:
-                if not prevCell:
-                    self.s_prefix = ''
-                    self.t_prefix = ''
-                elif prevCell.isOnTopOf(self):
-                    self.s_prefix = prevCell.s_prefix + s[prevCell.x + 1:self.x + 1]
-                    self.t_prefix = prevCell.t_prefix + GAP_SYMBOL * (self.x - prevCell.x)
-                elif prevCell.isLeftTo(self):
-                    self.s_prefix = prevCell.s_prefix + GAP_SYMBOL * (self.y - prevCell.y)
-                    self.t_prefix = prevCell.t_prefix + t[prevCell.y + 1:self.y + 1]
-                else:
-                    self.s_prefix = prevCell.s_prefix + s[self.x]
-                    self.t_prefix = prevCell.t_prefix + t[self.y]
-            finally:
-                if len(self.s_prefix) != len(self.t_prefix):
-                    raise Exception("Inconsistent length")
-
-    def cellSize(self):
-        return 3
 
     def __str__(self):
         return "%3d" % self.weight
 
 
 class LevMatrix:
-    def __init__(self, s, t, cellFactory=None, weight=lambda a, b: 0 if a == b else 1, cleanup=False):
+    def __init__(self, s, t, cellFactory=None, weight=lambda a, b: 0 if a == b else 1, cleanup=False, format='%-5s'):
         self.s = s
         self.t = t
         self.weight = weight
         self.cellFactory = cellFactory if cellFactory else self.createCell
         self.cleanup = cleanup
-        self.lock = multiprocessing.Lock()
-        self.condition = multiprocessing.Condition(self.lock)
 
         len_s = len(self.s)
         len_t = len(self.t)
-        self.matrix = Matrix(rows=len_s + 1, cols=len_t + 1, format='%%-%ds' % self.createCell(-1, -1, 0).cellSize(),
-            default=None)
+        self.matrix = Matrix(rows=len_s + 1, cols=len_t + 1, format=format, default=None)
         self._calculateMatrix()
 
     def createCell(self, x, y, weight, prevCell=None):
-        return LevMatrixCell(x, y, weight, self.s, self.t, prevCell)
+        return LevMatrixCell(x, y, weight)
 
     def calculatePathFromTop(self, top, x, y):
         return self.cellFactory(x, y, top.weight + self.weight(GAP_SYMBOL, None), top)
