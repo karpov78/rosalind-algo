@@ -1,5 +1,6 @@
 from python.suff import SuffixTree
 
+
 def cmp(a, b):
     return (a > b) - (a < b)
 
@@ -70,6 +71,7 @@ def validate(s, curr):
         i += 1
     return False
 
+
 if __name__ == '__main__':
     s = input()
     t = SuffixTree(s + '$')
@@ -89,5 +91,5 @@ if __name__ == '__main__':
             del keys[i - 1]
         else:
             i += 1
-        #print('\n'.join(['%s -> %d' % (x, mrep[x]) for x in keys]))
+            #print('\n'.join(['%s -> %d' % (x, mrep[x]) for x in keys]))
     print('\n'.join(keys))

@@ -2,6 +2,7 @@ from python.matrix import Matrix
 
 __author__ = 'ekarpov'
 
+
 def _validate(d, s, t):
     if len(s) != len(t):
         raise Exception("Inconsistent lengths")
@@ -77,6 +78,7 @@ def editString(s, t):
         prev_step = step
 
     return matrix[len_s, len_t], edited_s, edited_t
+
 
 if __name__ == "__main__":
     s = input()

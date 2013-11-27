@@ -1,10 +1,11 @@
-# coding=utf-8
+from array import array
+
 
 class Matrix:
-    def __init__(self, rows, cols=None, default=1000000000000, format='%d'):
+    def __init__(self, rows, cols=None, type='i', default=0, format='%d'):
         self._rows = rows
         self._cols = cols if cols else rows
-        self._matrix = [default] * (self._rows * self._cols)
+        self._matrix = array(type, [default] * (self._rows * self._cols))
         self._default = default
         self._format = format
 

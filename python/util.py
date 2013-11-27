@@ -1,3 +1,6 @@
+import math
+
+
 def reverseComplement(dna):
     lookup = {'A': 'T', 'T': 'A', 'G': 'C', 'C': 'G'}
     return ''.join([lookup[c] for c in reversed(dna)])
@@ -26,17 +29,26 @@ def calcMaxDNA(data):
     return maxLabel
 
 
-def readFASTA():
+def readFASTA(f):
     label = None
     dna = ''
     while True:
-        line = input()
+        line = f.readline()
         if not line:
             return None if not label else (label, dna)
         if line[0] == '>':
             label = line
         else:
             dna += line.strip()
+
+
+def readDNA(f):
+    dna = ''
+    while True:
+        line = f.readline()
+        if not line:
+            return dna
+        dna += line.strip()
 
 
 def readDNAs():
@@ -124,6 +136,7 @@ class ProfileMatrix:
                 res += str(c)
         return res
 
+
 rnaCodon = {
     "UUU": 'F', "CUU": 'L', "AUU": 'I', "GUU": 'V',
     "UUC": 'F', "CUC": 'L', "AUC": 'I', "GUC": 'V',
@@ -148,6 +161,7 @@ for (p, r) in tuple(rnaCodon.items()):
     if not r in reverseRNA:
         reverseRNA[r] = []
     reverseRNA[r] += [p]
+
 
 def dna2rna(dna):
     return dna.replace('T', 'U')
@@ -225,10 +239,18 @@ _reversed_monoisotopic_mass_table = {
     163.06333: 'Y'
 }
 
+
 def getIsotopicWeight(protein):
     res = 0
     for c in protein:
         res += monoisotopic_mass_table[c]
+    return res
+
+
+def getRoughIsotopicWeight(protein):
+    res = 0
+    for c in protein:
+        res += int(monoisotopic_mass_table[c])
     return res
 
 

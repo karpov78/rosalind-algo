@@ -1,5 +1,6 @@
 from python import util
 
+
 class GraphNode:
     def __init__(self, value):
         self.value = value
@@ -41,6 +42,7 @@ def traverseBackward(node, path):
         return
     for e in node.inbound:
         traverseBackward(e.startNode, path + e.value)
+
 
 L = []
 while True:

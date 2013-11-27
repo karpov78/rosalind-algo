@@ -1,5 +1,6 @@
 MODULO = 1000000
 
+
 def profile(row):
     z = sum([1 if c == '0' else 0 for c in row])
     o = sum([1 if c == '1' else 0 for c in row])

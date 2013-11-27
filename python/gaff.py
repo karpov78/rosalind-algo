@@ -1,5 +1,6 @@
 from python.lev_matrix import *
 
+
 def _validate(d, s, t):
     if len(s) != len(t):
         raise Exception("Inconsistent lengths")
@@ -38,12 +39,12 @@ class GaffMatrix(LevMatrix):
         self.gapOpening = gapOpening
         self.gapExtension = gapExtension
         super().__init__(s, t, self.createCell,
-            weight=lambda a, b: getBlosumWeight(a, b, gap_weight=-gapOpening - gapExtension))
+                         weight=lambda a, b: getBlosumWeight(a, b, gap_weight=-gapOpening - gapExtension))
 
     def calculatePathFromLeft(self, left, x, y):
-        calcWeight = lambda left:\
-        left.weight - self.gapOpening - self.gapExtension * (y - left.y) if left.gap != 1\
-        else left.weight - self.gapExtension * (y - left.y)
+        calcWeight = lambda left: \
+            left.weight - self.gapOpening - self.gapExtension * (y - left.y) if left.gap != 1 \
+                else left.weight - self.gapExtension * (y - left.y)
 
         if y <= 0:
             return self.cellFactory(x, y, calcWeight(left), left)
@@ -62,9 +63,9 @@ class GaffMatrix(LevMatrix):
         return self.cellFactory(x, y, newWeight, left_cell)
 
     def calculatePathFromTop(self, top, x, y):
-        calcWeight = lambda top:\
-        top.weight - self.gapOpening - self.gapExtension * (x - top.x) if top.gap != 2\
-        else top.weight - self.gapExtension * (x - top.x)
+        calcWeight = lambda top: \
+            top.weight - self.gapOpening - self.gapExtension * (x - top.x) if top.gap != 2 \
+                else top.weight - self.gapExtension * (x - top.x)
 
         if x <= 0:
             return self.cellFactory(x, y, calcWeight(top), top)
@@ -87,6 +88,7 @@ class GaffMatrix(LevMatrix):
         leftCell = None if y < 0 else self.matrix[x + 1, y]
         topCell = None if x < 0 else self.matrix[x, y + 1]
         return GaffMatrixCell(x, y, weight, self.s, self.t, leftCell, topCell, prevCell)
+
 
 if __name__ == '__main__':
     s = input()

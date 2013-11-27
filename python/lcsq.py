@@ -4,6 +4,7 @@ __author__ = 'ekarpov'
 
 lcs_cache = {}
 
+
 def lcs(s, t):
     global lcs_cache
 
@@ -21,6 +22,7 @@ def lcs(s, t):
         result = s1 if len(s1) > len(s2) else s2
         lcs_cache[s, t] = result
         return result
+
 
 if __name__ == "__main__":
     s = input()

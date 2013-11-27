@@ -1,6 +1,7 @@
 from python.lev_matrix import *
 from python.timer import Timer
 
+
 def _validate(d, s, t):
     if len(s) != len(t):
         raise Exception("Inconsistent lengths")
@@ -70,6 +71,7 @@ class GconMatrix(LevMatrix):
         leftCell = None if y < 0 else self.matrix[x + 1, y]
         topCell = None if x < 0 else self.matrix[x, y + 1]
         return GconMatrixCell(x, y, weight, self.s, self.t, leftCell, topCell, prevCell)
+
 
 if __name__ == "__main__":
     s = input()

@@ -5,6 +5,7 @@ def iterate(prefix, alphabet, target_len):
         if should_continue:
             iterate(prefix + c, alphabet, target_len)
 
+
 alphabet = input().split()
 length = int(input())
 

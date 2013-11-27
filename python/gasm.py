@@ -1,5 +1,6 @@
 from python.util import reverseComplement
 
+
 class Node:
     def __init__(self, value):
         self.value = value
@@ -70,6 +71,7 @@ def traverseGraph(start_node, edges, visited, k):
                 if not minPath or len(minPath) > len(node.path):
                     minPath = node.path
     return minPath
+
 
 if __name__ == '__main__':
     s = []

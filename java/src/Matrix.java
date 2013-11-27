@@ -1,10 +1,13 @@
+import java.lang.reflect.Array;
+
 /**
  * @author ekarpov
  */
+@SuppressWarnings("unchecked")
 public class Matrix<T> {
     public final int rows;
     public final int cols;
-    public final T[] matrix;
+    public final Object matrix;
     private CellFormatter<T> formatter = new DefaultFormatter<T>();
 
     public interface CellFormatter<X> {
@@ -18,7 +21,7 @@ public class Matrix<T> {
     }
 
     public static Matrix<Integer> parseIntMatrix(final String... rows) {
-        final Matrix<Integer> result = new Matrix<Integer>(rows.length, rows[0].split(" ").length);
+        final Matrix<Integer> result = new Matrix<Integer>(rows.length, rows[0].split(" ").length, int.class);
         int idx = 0;
         for (final String row : rows) {
             for (final String cell : row.split(" ")) {
@@ -28,11 +31,10 @@ public class Matrix<T> {
         return result;
     }
 
-    public Matrix(int rows, int cols) {
+    public Matrix(int rows, int cols, Class<T> c) {
         this.rows = rows;
         this.cols = cols;
-        //noinspection unchecked
-        this.matrix = (T[]) new Object[rows * cols];
+        this.matrix = Array.newInstance(c, rows * cols);
     }
 
     public void setFormatter(CellFormatter<T> formatter) {
@@ -43,33 +45,16 @@ public class Matrix<T> {
         return x * cols + y;
     }
 
-    public int[] decode(int index) {
-        final int x = index / cols;
-        return new int[]{x, index - x * cols};
-    }
-
     public T get(int index) {
-        return matrix[index];
+        return (T) Array.get(matrix, index);
     }
 
     public T get(int x, int y) {
-        return matrix[index(x, y)];
+        return (T) Array.get(matrix, index(x, y));
     }
 
     public void set(int index, T value) {
-        matrix[index] = value;
-    }
-
-    public void set(int x, int y, T value) {
-        matrix[index(x, y)] = value;
-    }
-
-    public void del(int index) {
-        matrix[index] = null;
-    }
-
-    public void del(int x, int y) {
-        matrix[index(x, y)] = null;
+        Array.set(matrix, index, value);
     }
 
     public String toString() {
@@ -80,7 +65,7 @@ public class Matrix<T> {
 
             for (int j = 0; j < cols; j++) {
                 if (j > 0) result.append(' ');
-                result.append(formatter.format(matrix[idx++]));
+                result.append(formatter.format(get(idx++)));
             }
         }
         return result.toString();

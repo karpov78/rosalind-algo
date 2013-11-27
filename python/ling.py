@@ -1,5 +1,6 @@
 from python.suff_tree import SuffixTree
 
+
 def m(n):
     result = [0] * n
     x = n
@@ -22,6 +23,7 @@ def calculate_subs(s_tree):
             result += e.length
             nodes.append(e.end)
     return result
+
 
 if __name__ == '__main__':
     s = input()

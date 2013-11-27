@@ -13,6 +13,7 @@ def perm(h, t):
         result += perm(h + [-1 * a], new_tail) + perm(h + [a], new_tail)
     return result
 
+
 n = int(input())
 f = lambda n: n - 1 + abs(n - 1) and f(n - 2) * int(n) or 1
 estimate = f(2 * n)

@@ -3,8 +3,8 @@ import python.ctbl
 
 def depthFirst(node):
     if len(node.edges) == 0:
-        return 1 if node.value == 'AA' else 0,\
-               1 if node.value == 'Aa' else 0,\
+        return 1 if node.value == 'AA' else 0, \
+               1 if node.value == 'Aa' else 0, \
                1 if node.value == 'aa' else 0
     aa = depthFirst(node.edges[0])
     bb = depthFirst(node.edges[1])

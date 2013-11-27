@@ -4,6 +4,7 @@ from python.timer import Timer
 GAP_EXTENSION_PENALTY = 1
 GAP_OPEN_PENALTY = 11 + GAP_EXTENSION_PENALTY
 
+
 def leftGapOpen(left):
     return max(left.weight - GAP_OPEN_PENALTY, left.gap_weight_left - GAP_EXTENSION_PENALTY)
 
@@ -99,6 +100,7 @@ class LaffMatrix(LevMatrix):
             x, y = cell.prev
             cell = self.matrix[x + 1, y + 1]
         return se, st
+
 
 if __name__ == '__main__':
     s = input()

@@ -1,5 +1,6 @@
 from python.matrix import Matrix
 
+
 def calculateNumberOfOptimalAlignments(s, t):
     len_s = len(s)
     len_t = len(t)
@@ -38,6 +39,7 @@ def calculateNumberOfOptimalAlignments(s, t):
             #    print(n_paths)
             #    print('-------------------------------------------------')
     return n_paths[len_s, len_t]
+
 
 if __name__ == '__main__':
     s = input()

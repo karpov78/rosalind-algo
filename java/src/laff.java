@@ -35,7 +35,7 @@ public class laff {
         private int maxY;
 
         private LaffMatrix(String s, String t) throws InterruptedException {
-            super(s, t);
+            super(s, t, short[].class);
             matrix.setFormatter(new Matrix.CellFormatter<short[]>() {
                 public String format(short[] cell) {
                     return String.format("%2d(%2d,%2d)", cell[WEIGHT], cell[GAP_TOP], cell[GAP_LEFT]);
@@ -47,7 +47,7 @@ public class laff {
             return getBlosumWeight(a, b);
         }
 
-        protected short[] buildCell(short[] diag, short[] top, short[] left, short x, short y) {
+        protected short[] buildCell(short[] diag, short[] top, short[] left, int x, int y) {
             if (top == null && left == null)
                 return createCell((short) 0, null, null);
             else if (top == null)

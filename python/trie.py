@@ -2,6 +2,7 @@ __author__ = 'ekarpov'
 
 nodeIdx = 1
 
+
 class GraphNode:
     def __init__(self):
         global nodeIdx
@@ -27,6 +28,7 @@ def traverse(root):
     for k, n in root.edges.items():
         print("%d %d %s" % (root.value, n.value, k))
         traverse(n)
+
 
 if __name__ == '__main__':
     root = GraphNode()

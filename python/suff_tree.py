@@ -1,6 +1,6 @@
 import sys
 
-from python.timer import Timer
+from timer import Timer
 
 
 class Edge:
@@ -39,12 +39,33 @@ class Node:
             result += e.end.power()
         return result
 
+    def positions(self):
+        if len(self.edges) == 0:
+            return [0]
+        result = []
+        for e in self.edges:
+            pos = e.end.positions()
+            for p in pos:
+                result.append(e.length + p)
+        return result
+
     def add(self, offset, length):
         for e in self.edges:
             if e.offset == offset:
                 return e
         self.edges.append(Edge(Node(), offset, length))
         return self.edges[-1]
+
+    def getSuffixLengths(self):
+        res = []
+        if len(self.edges) > 0:
+            for e in self.edges:
+                lengths = e.end.getSuffixLengths()
+                for l in lengths:
+                    res.append(e.length + l)
+        else:
+            res.append(0)
+        return res
 
     def addMoveChildren(self, offset, length):
         newNode = Node()
@@ -68,19 +89,13 @@ class Node:
 
 
 class SuffixTree:
-    def __init__(self, s=None, progress=False):
+    def __init__(self, s=None):
         self.s = s
         self.root = Node()
         if s:
             l = len(s)
             for k in range(1, l):
-                if progress and k % 10 == 1:
-                    sys.stdout.write("%.3f%%\r" % (k * 100 / l))
-                    sys.stdout.flush()
                 self.append(s, offset=l - k, s_len=l)
-            if progress:
-                sys.stdout.write("100%\r")
-                sys.stdout.flush()
             self.append(s)
 
     def append(self, s, root=None, offset=0, s_len=None):
@@ -109,9 +124,10 @@ class SuffixTree:
     def __str__(self):
         return '\n'.join([x.printEdge(self) for x in self.root.edges])
 
+
 if __name__ == '__main__':
     s = input()
     timer = Timer()
     with (timer):
-        print(SuffixTree(s, progress=True))
+        print(SuffixTree(s))
     print(timer)

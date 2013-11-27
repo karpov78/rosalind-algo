@@ -1,8 +1,9 @@
-from python.util import readFASTA, locate
+from util import readFASTA, locate
 
 ALPHABET = ['A', 'C', 'G', 'T']
 
 __author__ = 'ekarpov'
+
 
 def buildKmer(k):
     if k == 1:

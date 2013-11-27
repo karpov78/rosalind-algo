@@ -61,6 +61,7 @@ def extractQuartets(nodes, charTable):
             result = result.union(pairs(perm(ones), perm(zeroes)))
     return result
 
+
 if __name__ == '__main__':
     nodes = input().split()
     charTable = []

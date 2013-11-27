@@ -4,6 +4,7 @@ import timer
 
 cache = {}
 
+
 def c(n, k):
     if (n, k) in cache:
         return cache[n, k]
@@ -15,6 +16,7 @@ def c(n, k):
         value = c(n - 1, k) + c(n - 1, k - 1)
         cache[n, k] = value
         return value
+
 
 if __name__ == '__main__':
     n = 2 * int(input())

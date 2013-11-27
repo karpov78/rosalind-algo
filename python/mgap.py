@@ -14,7 +14,8 @@ class MaxGapMatrixCell(LevMatrixCell):
 class MaxGapLevMatrix(LevMatrix):
     def __init__(self, s, t):
         super().__init__(s, t, cellFactory=self.createCell,
-            weight=lambda x, y: -1 if x == GAP_SYMBOL or y == GAP_SYMBOL else 1 if x == y else -10000, cleanup=True)
+                         weight=lambda x, y: -1 if x == GAP_SYMBOL or y == GAP_SYMBOL else 1 if x == y else -10000,
+                         cleanup=True)
 
     def buildCell(self, diag, top, left, x, y):
         if top is None and left is None:

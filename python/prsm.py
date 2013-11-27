@@ -1,6 +1,7 @@
 from python.util import getIsotopicWeight
 from python.conv import mDiff, getMaxMultiplicity
 
+
 def calcDiff(s, R):
     global s_s, i, x, weights
     s_s = set()
@@ -13,6 +14,7 @@ def calcDiff(s, R):
     diff = mDiff(weights, R)
     max, max_key = getMaxMultiplicity(diff)
     return max
+
 
 if __name__ == '__main__':
     n = int(input())

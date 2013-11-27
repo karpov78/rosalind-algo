@@ -7,6 +7,7 @@ END_MARKER = '$'
 
 __author__ = 'ekarpov'
 
+
 class Data:
     def __init__(self, name, location, length):
         self.name = name
@@ -18,8 +19,10 @@ class Data:
         substr = s[self.location - 1: self.location + self.length - 1]
         return substr if len(substr) == 0 or substr[-1] != END_MARKER else substr[:-1]
 
+
 node_stack = []
 occurrences = {}
+
 
 def calcSuffix(node):
     global node_stack, occurrences, k
@@ -35,6 +38,7 @@ def calcSuffix(node):
 
 
 f = open(argv[1], 'r')
+
 
 def readNext():
     return f.readline()

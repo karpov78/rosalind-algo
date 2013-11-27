@@ -44,8 +44,10 @@ def findNodes(row):
     x = y = -1
     for i in range(len(row)):
         if row[i] == '1':
-            if x < 0: x = i
-            else: y = i
+            if x < 0:
+                x = i
+            else:
+                y = i
     return x, y
 
 
@@ -113,6 +115,7 @@ def _validate(tree):
         raise Exception("invalid tree: %s" % tree.toNewick())
     for c in tree.children:
         _validate(c)
+
 
 if __name__ == '__main__':
     nodes = input().split()

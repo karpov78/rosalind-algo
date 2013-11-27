@@ -5,6 +5,7 @@ __author__ = 'ekarpov'
 cache = {}
 sys.setrecursionlimit(10000)
 
+
 def levenstein(s, t):
     len_s = len(s)
     len_t = len(t)
@@ -18,9 +19,10 @@ def levenstein(s, t):
     else:
         cost = 1 if s[-1] != t[-1] else 0
         d = min(levenstein(s[:-1], t) + 1, levenstein(s, t[:-1]) + 1,
-            levenstein(s[:-1], t[:-1]) + cost)
+                levenstein(s[:-1], t[:-1]) + cost)
         cache[s, t] = d
         return d
+
 
 s = input()
 t = input()

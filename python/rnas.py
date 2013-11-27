@@ -11,6 +11,7 @@ def addSubGraph(i, j, s, subgraphs):
     if not included:
         subgraphs[i, j] = numOfBondingGraphs(s[i + 1: j])
 
+
 pairs = {
     'A': {'U'},
     'G': {'C', 'U'},
@@ -19,6 +20,7 @@ pairs = {
 }
 
 cache = {}
+
 
 def numOfBondingGraphs(s):
     len_s = len(s)
@@ -41,6 +43,7 @@ def numOfBondingGraphs(s):
     cache[s] = permutations
     #    print("%s (%s) - %d" % (s, str(countOuter), permutations))
     return permutations
+
 
 if __name__ == '__main__':
     s = input()

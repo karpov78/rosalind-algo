@@ -1,5 +1,6 @@
 known_distances = {}
 
+
 def flip(s, i, j):
     while i < j:
         c = s[i]

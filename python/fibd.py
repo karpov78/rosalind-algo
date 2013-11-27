@@ -1,5 +1,6 @@
 cache = {}
 
+
 def fib(n, m):
     if n <= 0:
         return [0] * m
@@ -18,6 +19,7 @@ def fib(n, m):
     res[1] = p[0]
     cache[n] = res
     return res
+
 
 if __name__ == '__main__':
     n, m = (int(x) for x in input().split())

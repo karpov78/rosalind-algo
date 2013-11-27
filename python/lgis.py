@@ -2,6 +2,7 @@ from python import timer
 
 _index = lambda len, i, j: i * len + j
 
+
 def printMatrix(m, n):
     for i in range(n):
         print(' '.join(['%-15s' % str(x) for x in m[i * n:i * n + n]]))
@@ -51,6 +52,7 @@ def longestIncreasing(s):
 def longestDecreasing(s):
     matrix = calculateDistanceMatrix(s, t=lambda x: len(s) - x)
     return matrix[len(s) * len(s) - 1]
+
 
 if __name__ == '__main__':
     n = int(input())

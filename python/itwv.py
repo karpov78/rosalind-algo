@@ -1,5 +1,6 @@
 from python.matrix import Matrix
 
+
 def tryInterwoven(s, t, u, i):
     savepoints = set()
     savepoints.add((i, 0, 0))
@@ -39,6 +40,7 @@ def isInterwoven(s, t, u):
             if tryInterwoven(s, t, u, i):
                 return True
     return False
+
 
 if __name__ == '__main__':
     s = input()

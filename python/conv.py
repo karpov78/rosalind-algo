@@ -19,6 +19,7 @@ def getMaxMultiplicity(diff):
             max_key = k
     return max, max_key
 
+
 if __name__ == '__main__':
     s1 = [float(x) for x in input().split(' ')]
     s2 = [float(x) for x in input().split(' ')]

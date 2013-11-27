@@ -2,9 +2,11 @@ from python import util
 
 __author__ = 'ekarpov'
 
+
 def build_deBruijin_graph(s):
     un = s.union({util.reverseComplement(x) for x in s})
     return [(r[:-1], r[1:]) for r in un]
+
 
 if __name__ == '__main__':
     s = set()

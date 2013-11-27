@@ -69,6 +69,7 @@ def printAlignment(m, cell):
         res += 1 if s_prefix[i] == t_prefix[i] else -1
     print(res)
 
+
 if __name__ == '__main__':
     s = input()
     t = input()

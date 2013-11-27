@@ -2,6 +2,7 @@ from python.lcsq import lcs
 
 __author__ = 'ekarpov'
 
+
 def lss(s, t):
     c = lcs(s, t)
     i = j = k = 0

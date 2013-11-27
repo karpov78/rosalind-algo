@@ -4,6 +4,7 @@ __author__ = 'ekarpov'
 
 factorials = {}
 
+
 def factorial(n):
     if n == 0 or n == 1:
         return 1
@@ -17,6 +18,7 @@ def factorial(n):
 
 def c(n, k):
     return factorial(n) / (factorial(k) * factorial(n - k))
+
 
 (k, N) = (int(x) for x in input().split(' '))
 x = (1 << k)

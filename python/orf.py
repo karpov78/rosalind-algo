@@ -5,6 +5,7 @@ from python.util import *
 
 START_CODON = 'AUG'
 
+
 def getORFs(rna):
     res = set()
     for m in re.finditer(START_CODON, rna):

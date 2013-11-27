@@ -109,6 +109,7 @@ def traverse(node, target, path=None):
         if value: return value
     return 0
 
+
 if __name__ == '__main__':
     result = []
     while True:

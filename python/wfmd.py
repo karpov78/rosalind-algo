@@ -2,6 +2,7 @@ import math
 
 cnk_values = {}
 
+
 def c(n, k):
     if k == 0 or n < k:
         return 0
@@ -26,6 +27,7 @@ def gen(SIZE, gen):
             p += gen[j] * prob(SIZE, (j + 1) / SIZE, i + 1)
         res[i] = p
     return res
+
 
 if __name__ == '__main__':
     N, m, g, k = (int(x) for x in input().split())

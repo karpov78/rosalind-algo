@@ -28,6 +28,7 @@ BLOSUM62 = parseIntMatrix(
     '-3 -2 -4 -3 1 -2 -2 -3 -3 -2 -1 -4 -4 -2 -3 -3 -2 -3 11 2',
     '-2 -2 -3 -2 3 -3 2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1 2 7')
 
+
 def getWeight(a, b):
     if a == GAP_SYMBOL or b == GAP_SYMBOL:
         return GAP_WEIGHT
@@ -116,6 +117,7 @@ def editString(s, t):
         prev_step = step
 
     return matrix[len_s, len_t], edited_s, edited_t
+
 
 if __name__ == "__main__":
     s = input()

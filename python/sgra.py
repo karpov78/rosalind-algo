@@ -1,5 +1,6 @@
 from python.util import getSymbol
 
+
 class GraphNode:
     def __init__(self, value):
         self.value = value
@@ -58,6 +59,7 @@ class SpecterGraph:
                     longest_path = end_path
             del paths[node]
         return longest_path
+
 
 if __name__ == '__main__':
     g = SpecterGraph()

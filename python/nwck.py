@@ -2,6 +2,7 @@ from python.tree import Tree
 
 __author__ = 'ekarpov'
 
+
 def del_substr(str, i, j):
     return (str[:i] if i > 0 else '') + str[j + 1:]
 
@@ -119,6 +120,7 @@ def test_distance(nwck, nodes):
         print(' '.join([str(x.data) for x in p1]))
         print(' '.join([str(x.data) for x in p2]))
     return len(p1) + len(p2)
+
 
 res = []
 

@@ -1,13 +1,14 @@
 import time
 import datetime
 
+
 class Timer:
     def __enter__(self):
-        self.start = time.perf_counter()
+        self.start = time.clock()
         return self
 
     def __exit__(self, *args):
-        self.end = time.perf_counter()
+        self.end = time.clock()
         self.interval = self.end - self.start
 
     def __str__(self):

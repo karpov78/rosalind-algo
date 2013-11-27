@@ -1,11 +1,13 @@
 __author__ = 'ekarpov'
 
+
 def falseProb(s, gc):
     P = {'A': (1 - gc) / 2, 'T': (1 - gc) / 2, 'C': gc / 2, 'G': gc / 2}
     p = 1
     for c in s:
         p *= P[c]
     return 1 - p
+
 
 d = input().split(' ')
 N = int(d[0])

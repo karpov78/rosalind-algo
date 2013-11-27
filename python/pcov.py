@@ -1,6 +1,7 @@
 def build_deBruijin_graph(s):
     return {r[:-1]: r[1:] for r in s}
 
+
 s = []
 while True:
     l = input()

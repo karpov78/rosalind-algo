@@ -2,6 +2,7 @@ import sys
 
 TERMINAL = '*'
 
+
 class Edge:
     def __init__(self, e, value):
         self.value = value
@@ -133,6 +134,7 @@ def getAllSuffixes(s):
     for i in range(len(s)):
         res.add(s[i:])
     return res
+
 
 if __name__ == '__main__':
     s = input()

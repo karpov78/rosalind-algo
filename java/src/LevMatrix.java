@@ -43,13 +43,13 @@ public abstract class LevMatrix<T> {
     protected final String t;
     protected final Matrix<T> matrix;
 
-    protected LevMatrix(String s, String t) throws InterruptedException {
+    protected LevMatrix(String s, String t, Class<T> c) throws InterruptedException {
         this.s = s;
         this.t = t;
-        matrix = new Matrix<T>(s.length() + 1, t.length() + 1);
+        matrix = new Matrix<T>(s.length() + 1, t.length() + 1, c);
     }
 
-    protected abstract T buildCell(T diag, T top, T left, short x, short y);
+    protected abstract T buildCell(T diag, T top, T left, int x, int y);
 
     protected void calculateMatrix() throws InterruptedException {
         final int len_s = s.length();
@@ -59,11 +59,11 @@ public abstract class LevMatrix<T> {
         int top_index = current_index - matrix.cols;
         int diag_index = top_index - 1;
 
-        for (short i = -1; i < len_s; i++) {
+        for (int i = -1; i < len_s; i++) {
             System.out.print(String.format("\r%3d%%", i * 100 / matrix.rows));
 
             final int t_len = t.length();
-            for (short j = -1; j < t_len; j++) {
+            for (int j = -1; j < t_len; j++) {
                 final T diag = i >= 0 && j >= 0 ? matrix.get(diag_index) : null;
                 final T top = i >= 0 ? matrix.get(top_index) : null;
                 final T left = j >= 0 ? matrix.get(left_index) : null;

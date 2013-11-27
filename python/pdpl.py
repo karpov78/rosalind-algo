@@ -19,7 +19,9 @@ def remove(s, x, start=0, end=None):
     else:
         return remove(s, x, mid, end)
 
+
 failed_n = set()
+
 
 def tryN(s, items, n):
     for c in items:
@@ -49,6 +51,7 @@ def recreateSet(s):
         if ret: return ret
 
     return None
+
 
 if __name__ == '__main__':
     s = [int(x) for x in input().split(' ')]
