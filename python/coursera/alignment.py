@@ -1,23 +1,32 @@
 import sys
 
-mn_cache = {}
+
+def printMatrix(matrix, n, m):
+    print '\n'.join([' '.join([str(matrix[i][j]) for j in xrange(m + 1)]) for i in xrange(n + 1)])
 
 
-def min_num_coins(n, coins):
-    if n == 0:
-        return 0
-    if n < 0:
-        return 10000000000;
-    if n in mn_cache:
-        return mn_cache[n]
-    if n in coins:
-        return 1
-    res = min([min_num_coins(n - x, coins) for x in coins]) + 1
-    mn_cache[n] = res
-    return res
-
+down = []
+right = []
 
 sys.setrecursionlimit(10000)
 n = int(raw_input())
-coins = [int(x) for x in raw_input().split(',')]
-print min_num_coins(n, coins)
+m = int(raw_input())
+
+for i in xrange(n):
+    down.append([int(x) for x in raw_input().split(' ')])
+raw_input()
+for j in xrange(n + 1):
+    right.append([int(x) for x in raw_input().split(' ')])
+
+scoreMatrix = [list([0] * (m + 1)) for i in xrange(n + 1)]
+for i in xrange(n):
+    scoreMatrix[i + 1][0] = down[i][0]
+for i in xrange(m):
+    scoreMatrix[0][i + 1] = right[0][i]
+for i in xrange(1, n + 1):
+    for j in xrange(1, m + 1):
+        left_edge = right[i][j - 1]
+        top_edge = down[i - 1][j]
+        scoreMatrix[i][j] = max(scoreMatrix[i][j - 1] + left_edge, scoreMatrix[i - 1][j] + top_edge)
+#printMatrix(scoreMatrix, n, m)
+print scoreMatrix[n][m]
