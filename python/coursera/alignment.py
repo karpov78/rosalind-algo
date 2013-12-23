@@ -2,31 +2,37 @@ import sys
 
 
 def printMatrix(matrix, n, m):
-    print '\n'.join([' '.join([str(matrix[i][j]) for j in xrange(m + 1)]) for i in xrange(n + 1)])
+    print '\n'.join([' '.join([str(matrix[i][j]) for j in xrange(m)]) for i in xrange(n)])
 
 
-down = []
-right = []
+def lcs(s1, s2):
+    s = [[0] * len(s2) for i in xrange(len(s1))]
+    backtrack = [[None] * len(s2) for i in xrange(len(s1))]
+    for i in xrange(1, len(s1)):
+        for j in xrange(1, len(s2)):
+            s[i][j] = max(s[i - 1][j],
+                          s[i][j - 1],
+                          s[i - 1][j - 1] + 1 if s1[i] == s2[j] else -1)
+            backtrack[i][j] = 'D' if s[i][j] == s[i - 1][j] else 'L' if s[i][j] == s[i][j - 1] else 'T'
+    return backtrack
 
-sys.setrecursionlimit(10000)
-n = int(raw_input())
-m = int(raw_input())
 
-for i in xrange(n):
-    down.append([int(x) for x in raw_input().split(' ')])
-raw_input()
-for j in xrange(n + 1):
-    right.append([int(x) for x in raw_input().split(' ')])
+def output_backtrack(backtrack, s1, i, j):
+    if i == 0 or j == 0:
+        return []
+    if backtrack[i][j] == 'D':
+        return output_backtrack(backtrack, s1, i - 1, j)
+    elif backtrack[i][j] == 'L':
+        return output_backtrack(backtrack, s1, i, j - 1)
+    else:
+        return output_backtrack(backtrack, s1, i - 1, j - 1) + [s1[i]]
 
-scoreMatrix = [list([0] * (m + 1)) for i in xrange(n + 1)]
-for i in xrange(n):
-    scoreMatrix[i + 1][0] = down[i][0]
-for i in xrange(m):
-    scoreMatrix[0][i + 1] = right[0][i]
-for i in xrange(1, n + 1):
-    for j in xrange(1, m + 1):
-        left_edge = right[i][j - 1]
-        top_edge = down[i - 1][j]
-        scoreMatrix[i][j] = max(scoreMatrix[i][j - 1] + left_edge, scoreMatrix[i - 1][j] + top_edge)
-#printMatrix(scoreMatrix, n, m)
-print scoreMatrix[n][m]
+
+sys.setrecursionlimit(100000)
+
+s1 = raw_input()
+s2 = raw_input()
+backtrack = lcs(s1, s2)
+#printMatrix(backtrack, len(s1), len(s2))
+res = output_backtrack(backtrack, s1, len(s1) - 1, len(s2) - 1)
+print ''.join(res)
