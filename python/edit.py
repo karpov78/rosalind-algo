@@ -24,7 +24,7 @@ def levenstein(s, t):
         return d
 
 
-s = input()
-t = input()
+s = raw_input()
+t = raw_input()
 
 print(levenstein(s, t))

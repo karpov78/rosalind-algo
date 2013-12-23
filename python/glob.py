@@ -120,8 +120,8 @@ def editString(s, t):
 
 
 if __name__ == "__main__":
-    s = input()
-    t = input()
+    s = raw_input()
+    t = raw_input()
     target_d, edited_s, edited_t = editString(s, t)
     print(target_d)
     print(edited_s)

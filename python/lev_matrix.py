@@ -1,5 +1,3 @@
-import sys
-
 from python.matrix import Matrix, parseIntMatrix
 
 
@@ -78,54 +76,40 @@ class LevMatrix:
         len_s = len(self.s)
         len_t = len(self.t)
         self.matrix = Matrix(rows=len_s + 1, cols=len_t + 1, format=format, type=type, default=0)
-        self._calculateMatrix()
+        self._calculate_matrix()
 
-    def createCell(self, weight):
+    def createCell(self, x, y, weight):
         return weight
 
     def calculatePathFromTop(self, top, x, y):
-        return self.cellFactory(top + self.weight(GAP_SYMBOL, None))
+        return top + self.weight(GAP_SYMBOL, None)
 
     def calculatePathFromLeft(self, left, x, y):
-        return self.cellFactory(left + self.weight(GAP_SYMBOL, None))
+        return left + self.weight(GAP_SYMBOL, None)
 
     def buildCell(self, diag, top, left, x, y):
         if top is None and left is None:
-            return self.cellFactory(0)
+            return self.cellFactory(x, y, 0)
         elif top is None:
-            return self.calculatePathFromLeft(left, x, y)
+            return self.cellFactory(x, y, self.calculatePathFromLeft(left, x, y))
         elif left is None:
-            return self.calculatePathFromTop(top, x, y)
+            return self.cellFactory(x, y, self.calculatePathFromTop(top, x, y))
         else:
             pathFromTop = self.calculatePathFromTop(top, x, y)
             pathFromLeft = self.calculatePathFromLeft(left, x, y)
-            pathDiag = self.cellFactory(diag + self.weight(self.s[x], self.t[y]))
-            return max(pathFromLeft, pathFromTop, pathDiag)
+            pathDiag = diag + self.weight(self.s[x - 1], self.t[y - 1])
+            return self.cellFactory(x, y, max(pathFromLeft, pathFromTop, pathDiag))
 
-    def _calculateMatrix(self):
+    def _calculate_matrix(self):
         len_s = len(self.s)
         len_t = len(self.t)
 
-        current_index = 0
-        left_index = current_index - 1
-        top_index = -len_t - 1
-        diag_index = top_index - 1
-
-        for i in range(-1, len_s):
-            sys.stdout.write("\r%3d%%" % ((i + 1) * 100 / (len_s + 1)))
-            sys.stdout.flush()
-
-            for j in range(-1, len_t):
-                diag = self.matrix[diag_index] if i >= 0 and j >= 0 else None
-                top = self.matrix[top_index] if i >= 0 else None
-                left = self.matrix[left_index] if j >= 0 else None
-                self.matrix[current_index] = self.buildCell(diag, top, left, i, j)
-
-                current_index += 1
-                top_index += 1
-                left_index += 1
-                diag_index += 1
-        print()
+        for i in xrange(0, len_s + 1):
+            for j in xrange(0, len_t + 1):
+                diag = self.matrix[i - 1, j - 1] if i > 0 and j > 0 else None
+                top = self.matrix[i - 1, j] if i > 0 else None
+                left = self.matrix[i, j - 1] if j > 0 else None
+                self.matrix[i, j] = self.buildCell(diag, top, left, i, j)
 
     def getLastCell(self):
         return self.matrix[-1]

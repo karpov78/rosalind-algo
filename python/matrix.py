@@ -1,11 +1,8 @@
-from array import array
-
-
 class Matrix:
     def __init__(self, rows, cols=None, type='i', default=0, format='%d'):
         self._rows = rows
         self._cols = cols if cols else rows
-        self._matrix = array(type, [default] * (self._rows * self._cols))
+        self._matrix = [[default] * self._cols for x in xrange(self._rows)]
         self._default = default
         self._format = format
 
@@ -17,41 +14,31 @@ class Matrix:
         return x, index - x * self._cols
 
     def isDefault(self, key):
-        return self._matrix[self.index(key[0], key[1])] == self._default
+        return self._matrix[key[0]][key[1]] == self._default
 
     def __len__(self):
         return self._rows
 
     def __getitem__(self, key):
         if type(key) is tuple:
-            return self._matrix[self.index(key[0], key[1])]
-        elif type(key) is int:
-            return self._matrix[key]
+            return self._matrix[key[0]][key[1]]
         else:
             raise TypeError
 
     def __setitem__(self, key, value):
         if type(key) is tuple:
-            self._matrix[self.index(key[0], key[1])] = value
-        elif type(key) is int:
-            self._matrix[key] = value
+            self._matrix[key[0]][key[1]] = value
         else:
             raise TypeError
 
     def __delitem__(self, key):
         if type(key) is tuple:
-            self._matrix[self.index(key[0], key[1])] = self._default
-        elif type(key) is int:
-            self._matrix[key] = self._default
+            self._matrix[key[0]][key[1]] = self._default
         else:
             raise TypeError
 
     def __str__(self):
-        rows = [''] * self._rows
-        for i in range(self._rows):
-            rows[i] = ' '.join(
-                [self._format % cell for cell in self._matrix[i * self._cols:i * self._cols + self._cols]])
-        return '\n'.join(rows)
+        return '\n'.join([' '.join([self._format % y for y in x]) for x in self._matrix])
 
 
 def parseIntMatrix(*rows):

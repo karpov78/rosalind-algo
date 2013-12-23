@@ -1,66 +1,52 @@
-import sys
-
 from python.lev_matrix import LevMatrix, GAP_SYMBOL
 
 
 def weight(a, b):
+    if a == GAP_SYMBOL or b == GAP_SYMBOL:
+        return -1
     return 1 if a == b else -1
 
 
 class FittingAlignmentMatrix(LevMatrix):
     def __init__(self, s, t):
-        self.maxValue = None
-
-        super().__init__(s, t, weight=weight, format="%-3d")
+        self.max_value = None
+        LevMatrix.__init__(self, s, t, weight=weight)
 
     def calculatePathFromTop(self, top, x, y):
-        return self.cellFactory(x, y, (top - 1) if y >= 0 else 0)
-
-    def calculatePathFromLeft(self, left, x, y):
-        return self.cellFactory(x, y, left - 1)
-
-    def buildCell(self, diag, top, left, x, y):
-        if top is None and left is None:
-            return self.cellFactory(x, y, 0)
-        elif top is None:
-            return self.calculatePathFromLeft(left, x, y)
-        elif left is None:
-            return self.calculatePathFromTop(top, x, y)
-        else:
-            pathFromTop = self.calculatePathFromTop(top, x, y)
-            pathFromLeft = self.calculatePathFromLeft(left, x, y)
-            diag = self.cellFactory(x, y, diag + self.weight(self.s[x], self.t[y]))
-            return max(pathFromLeft, pathFromTop, diag)
+        return top - 1 if y > 0 else 0
 
     def createCell(self, x, y, weight, prevCell=None):
-        if y == len(t) - 1 and (not self.maxValue or self.maxValue < weight):
-            self.maxValue = weight
+        if y == len(t) and (not self.max_value or self.matrix[self.max_value] < weight):
+            self.max_value = (x, y)
         return weight
 
 
 def printAlignment(m, cell):
     s_prefix = ''
     t_prefix = ''
-    while cell[1] >= 0:
-        cellValue = m.matrix[cell[0] + 1, cell[1] + 1]
-        diag = m.matrix[cell]
-        top = m.matrix[cell[0], cell[1] + 1]
-        left = m.matrix[cell[0] + 1, cell[1]]
-        if diag + weight(s[cell[0]], t[cell[1]]) == cellValue:
-            s_prefix = s[cell[0]] + s_prefix
-            t_prefix = t[cell[1]] + t_prefix
+    while cell[1] >= 1:
+        cell_value = m.matrix[cell[0], cell[1]]
+        diag = m.matrix[cell[0] - 1, cell[1] - 1]
+        top = m.matrix[cell[0] - 1, cell[1]]
+        left = m.matrix[cell[0], cell[1] - 1]
+
+        s_char = s[cell[0] - 1]
+        t_char = t[cell[1] - 1]
+        if diag + weight(s_char, t_char) == cell_value:
+            s_prefix = s_char + s_prefix
+            t_prefix = t_char + t_prefix
             cell = (cell[0] - 1, cell[1] - 1)
-        elif top - 1 == cellValue:
-            s_prefix = s[cell[0]] + s_prefix
+        elif top - 1 == cell_value:
+            s_prefix = s_char + s_prefix
             t_prefix = GAP_SYMBOL + t_prefix
             cell = (cell[0] - 1, cell[1])
-        elif left - 1 == cellValue:
+        elif left - 1 == cell_value:
             s_prefix = GAP_SYMBOL + s_prefix
-            t_prefix = t[cell[1]] + t_prefix
+            t_prefix = t_char + t_prefix
             cell = (cell[0], cell[1] - 1)
         else:
-            sys.exit(1)
-            #raise Exception("Something wrong is happening")
+            #sys.exit(1)
+            raise Exception("Something wrong is happening")
     print(s_prefix)
     print(t_prefix)
 
@@ -71,16 +57,10 @@ def printAlignment(m, cell):
 
 
 if __name__ == '__main__':
-    s = input()
-    t = input()
+    s = raw_input()
+    t = raw_input()
     m = FittingAlignmentMatrix(s, t)
-    #print(m)
-    print(m.maxValue)
-
-    y = len(t) - 1
-    for x in range(-1, len(s)):
-        cell = (x, y)
-        w = m.matrix[x + 1, y + 1]
-        if w == m.maxValue:
-            printAlignment(m, cell)
-            break
+    print(m)
+    print(m.max_value)
+    print(m.matrix[m.max_value])
+    printAlignment(m, m.max_value)
