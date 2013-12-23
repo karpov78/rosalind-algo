@@ -1,38 +1,51 @@
 import sys
 
+import parse
+
 
 def printMatrix(matrix, n, m):
     print '\n'.join([' '.join([str(matrix[i][j]) for j in xrange(m)]) for i in xrange(n)])
 
 
-def lcs(s1, s2):
-    s = [[0] * len(s2) for i in xrange(len(s1))]
-    backtrack = [[None] * len(s2) for i in xrange(len(s1))]
-    for i in xrange(1, len(s1)):
-        for j in xrange(1, len(s2)):
-            s[i][j] = max(s[i - 1][j],
-                          s[i][j - 1],
-                          s[i - 1][j - 1] + 1 if s1[i] == s2[j] else -1)
-            backtrack[i][j] = 'D' if s[i][j] == s[i - 1][j] else 'L' if s[i][j] == s[i][j - 1] else 'T'
-    return backtrack
+def add_node(nodes, n):
+    if not n in nodes:
+        nodes[n] = [0, [n]]
 
 
-def output_backtrack(backtrack, s1, i, j):
-    if i == 0 or j == 0:
-        return []
-    if backtrack[i][j] == 'D':
-        return output_backtrack(backtrack, s1, i - 1, j)
-    elif backtrack[i][j] == 'L':
-        return output_backtrack(backtrack, s1, i, j - 1)
-    else:
-        return output_backtrack(backtrack, s1, i - 1, j - 1) + [s1[i]]
+def traverse(graph, nodes, n):
+    if not n in graph:
+        return
+    node = nodes[n]
+    edges = graph[n]
+    for e in edges:
+        edge_finish = e[0]
+        edge_weight = e[1]
+        finish = nodes[edge_finish]
+        if node[0] + edge_weight > finish[0]:
+            finish[0] = node[0] + edge_weight
+            finish[1] = node[1] + [edge_finish]
+            traverse(graph, nodes, edge_finish)
 
 
 sys.setrecursionlimit(100000)
 
-s1 = raw_input()
-s2 = raw_input()
-backtrack = lcs(s1, s2)
-#printMatrix(backtrack, len(s1), len(s2))
-res = output_backtrack(backtrack, s1, len(s1) - 1, len(s2) - 1)
-print ''.join(res)
+start = int(raw_input())
+finish = int(raw_input())
+graph = {}
+nodes = {}
+while True:
+    edge = raw_input()
+    if not edge:
+        break
+    r = parse.parse("{s:d}->{f:d}:{w:d}", edge)
+    if r['s'] in graph:
+        graph[r['s']].append((r['f'], r['w']))
+    else:
+        graph[r['s']] = [(r['f'], r['w'])]
+    add_node(nodes, r['s'])
+    add_node(nodes, r['f'])
+
+traverse(graph, nodes, start)
+finish_node = nodes[finish]
+print finish_node[0]
+print '->'.join([str(x) for x in finish_node[1]])
