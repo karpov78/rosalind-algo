@@ -78,7 +78,7 @@ class LevMatrix:
         self.matrix = Matrix(rows=len_s + 1, cols=len_t + 1, format=format, type=type, default=0)
         self._calculate_matrix()
 
-    def createCell(self, x, y, weight):
+    def createCell(self, x, y, weight, prevCell=None):
         return weight
 
     def calculatePathFromTop(self, top, x, y):
@@ -98,7 +98,11 @@ class LevMatrix:
             pathFromTop = self.calculatePathFromTop(top, x, y)
             pathFromLeft = self.calculatePathFromLeft(left, x, y)
             pathDiag = diag + self.weight(self.s[x - 1], self.t[y - 1])
-            return self.cellFactory(x, y, max(pathFromLeft, pathFromTop, pathDiag))
+            newScore = max(pathFromLeft, pathFromTop, pathDiag)
+            return self.cellFactory(x, y, newScore,
+                                    (x - 1, y - 1) if newScore == pathDiag else
+                                    (x - 1, y) if newScore == pathFromTop else
+                                    (x, y - 1))
 
     def _calculate_matrix(self):
         len_s = len(self.s)
