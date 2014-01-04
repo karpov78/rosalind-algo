@@ -88,6 +88,7 @@ def _calculateDistanceMatrix(s, t, gap_weight=GAP_WEIGHT):
 
 def editString(s, t):
     matrix, paths = _calculateDistanceMatrix(s, t)
+    print matrix
 
     len_s = len(s)
     len_t = len(t)
@@ -120,8 +121,10 @@ def editString(s, t):
 
 
 if __name__ == "__main__":
-    s = raw_input()
-    t = raw_input()
+    s = 'ACTTAATT'
+    t = 'GAGCAATT'
+    # s = raw_input()
+    # t = raw_input()
     target_d, edited_s, edited_t = editString(s, t)
     print(target_d)
     print(edited_s)
