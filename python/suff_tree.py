@@ -1,5 +1,3 @@
-import sys
-
 from timer import Timer
 
 
@@ -19,11 +17,11 @@ class Edge:
     def printEdge(self, tree, indent=''):
         res = indent + tree.s[self.offset:self.offset + self.length]
         for c in self.end.edges:
-            res += '\n' + c.printEdge(tree, '\t' + indent)
+            res += '\n' + c.printEdge(tree, '')#'\t' + indent#)
         return res
 
     def getValue(self, tree):
-        return tree.s[self.offset, self.length]
+        return tree.s[self.offset:self.offset + self.length]
 
     def __str__(self):
         return '%d %d' % (self.offset, self.length)
@@ -126,7 +124,7 @@ class SuffixTree:
 
 
 if __name__ == '__main__':
-    s = input()
+    s = raw_input()
     timer = Timer()
     with (timer):
         print(SuffixTree(s))

@@ -1,20 +1,19 @@
-__author__ = 'ekarpov'
-
 nodeIdx = 1
-
 
 class GraphNode:
     def __init__(self):
         global nodeIdx
         self.value = nodeIdx
         nodeIdx += 1
-        self.edges = {}
+        self.edges = [None] * 5
+        self.bitmap = {'A': 0, 'C': 1, 'G': 2, 'T': 3, '$': 4}
 
     def add(self, value):
-        res = self.edges.get(value)
+        idx = bitmap[value]
+        res = self.edges[idx]
         if res: return res
         res = GraphNode()
-        self.edges[value] = res
+        self.edges[idx] = res
         return res
 
 
@@ -33,7 +32,7 @@ def traverse(root):
 if __name__ == '__main__':
     root = GraphNode()
     while True:
-        s = input()
+        s = raw_input()
         if not s: break
         populateTrie(root, s)
     traverse(root)
