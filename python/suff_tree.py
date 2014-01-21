@@ -82,6 +82,17 @@ class Node:
                 res.add(edge.getValue(tree))
         return res
 
+    def contains(self, tree, t):
+        for e in self.edges:
+            if tree.s[e.offset] == t[0]:
+                len_t = len(t)
+                if len_t <= e.length:
+                    return t == tree.s[e.offset: e.offset + len_t]
+                else:
+                    return e.end.contains(tree, t[e.length:])
+        return False
+
+
     def __str__(self):
         return ' '.join([str(x) for x in self.edges])
 
@@ -118,6 +129,9 @@ class SuffixTree:
 
     def getAllSuffixes(self):
         return self.root.getAllSuffixes(self)
+
+    def contains(self, t):
+        return self.root.contains(self, t)
 
     def __str__(self):
         return '\n'.join([x.printEdge(self) for x in self.root.edges])
