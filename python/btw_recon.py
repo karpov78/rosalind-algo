@@ -9,6 +9,37 @@ def indexOf(a, x):
     raise ValueError(x)
 
 
+count_cache = {}
+
+
+def count(i, l, alphabet='$ACGT'):
+    global count_cache
+    if i in count_cache:
+        return count_cache[i]
+    elif i == 0:
+        return [0] * len(alphabet)
+    else:
+        c = list(calc_count(i - 1, l, alphabet))
+        c[indexOf(alphabet, l[i - 1][0])] += 1
+        count_cache[i] = c
+        return c
+
+
+def calc_count(i, l, alphabet='$ACGT'):
+    global count_cache
+    c = [0] * len(alphabet)
+    start = 0
+    for start in xrange(i, -1, -1):
+        if start in count_cache:
+            c = list(count_cache[start])
+            break
+    for j in xrange(start + 1, i + 1):
+        sIndex = indexOf(alphabet, l[j - 1][0])
+        c[sIndex] += 1
+        count_cache[j] = list(c)
+    return c
+
+
 def index(s):
     occ = {}
     for i in xrange(len(s)):
@@ -21,29 +52,19 @@ def index(s):
     return s
 
 
-def bwmatch(f, l, m, p):
+def bwmatch(firstOccurrence, l, p, alphabet='$ACGT'):
     top = 0
     bottom = len(l) - 1
     while top <= bottom:
         if len(p) > 0:
             s = p[-1]
             p = p[:-1]
-            newTop = None
-            newBottom = None
-            for j in xrange(top, bottom + 1):
-                if l[j][0] == s and not newTop:
-                    newTop = j
-                    newBottom = j
-                elif l[j][0] == s and newTop:
-                    newBottom = j
-            if not newTop:
-                return 0
-            top = last2first[newTop]
-            bottom = last2first[newBottom]
+            sIndex = indexOf(alphabet, s)
+            top = firstOccurrence[sIndex] + count(top, l, alphabet)[sIndex]
+            bottom = firstOccurrence[sIndex] + count(bottom + 1, l, alphabet)[sIndex] - 1
         else:
-            return newBottom - newTop + 1
+            return bottom - top + 1
     return 0
-
 
 s = raw_input()
 p = raw_input().split(' ')
@@ -54,13 +75,16 @@ p = raw_input().split(' ')
 #     f.readline()
 #     exp = [int(x) for x in f.readline().strip().split(' ')]
 
+alphabet = '$ACGT'
 f = [c for c in s]
 f.sort()
+firstOccurrence = [-1] * len(alphabet)
+for i in xrange(len(f)):
+    sIndex = indexOf(alphabet, f[i])
+    if firstOccurrence[sIndex] == -1:
+        firstOccurrence[sIndex] = i
 l = [c for c in s]
-index(f)
-index(l)
-last2first = {i: indexOf(f, l[i]) for i in xrange(len(s))}
 
-res = [bwmatch(f, l, last2first, x) for x in p]
+res = [bwmatch(firstOccurrence, l, x, alphabet) for x in p]
 print ' '.join([str(x) for x in res])
 # assert exp == res, "Expected \n%s\n, but was \n%s" % (str(exp), str(res))
