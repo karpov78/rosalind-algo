@@ -1,10 +1,6 @@
 from collections import defaultdict
 
 
-def get_suffix_array(str):
-    return sorted(range(len(str)), key=lambda i: str[i:])
-
-
 def sort_bucket(str, bucket, order):
     d = defaultdict(list)
     for i in bucket:
@@ -20,7 +16,7 @@ def sort_bucket(str, bucket, order):
 
 
 def suffix_array_ManberMyers(str):
-    return sort_bucket(str, (i for i in range(len(str))), 1)
+    return sort_bucket(str, (i for i in xrange(len(str))), 1)
 
 
 if __name__ == "__main__":
