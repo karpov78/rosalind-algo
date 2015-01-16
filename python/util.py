@@ -56,7 +56,7 @@ def readDNAs():
     label = None
     dna = ''
     while True:
-        line = input()
+        line = raw_input()
         if not line:
             if label:
                 d.append((label, dna))
