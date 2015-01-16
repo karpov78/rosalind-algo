@@ -1,5 +1,8 @@
 from bisect import bisect_left
 from collections import defaultdict
+from math import floor
+from timer import Timer
+from sys import stdout
 
 alphabet = '$ACGT'
 
@@ -116,40 +119,62 @@ class BWT:
         return 'BWT: %s\nLocate: %s\nLF: %s' % (self.bwt, self.locate, self.lf)
 
 
+def match(s, start_index, t, d):
+    match_index = start_index
+    mismatches = 0
+    for c in t:
+        if s[match_index] != c:
+            mismatches += 1
+            if mismatches > d:
+                break
+        match_index += 1
+    return mismatches <= d
+
+def find_approximate_matches(s, patterns, d):
+    b = BWT(s)
+
+    res = []
+    len_p = len(patterns)
+    p_i = 0
+    for p in patterns:
+        p_i += 1
+        if p_i % 10 == 0:
+            stdout.write("%d%%\r" % (p_i * 100 / len_p))
+        k = int(floor(len(p) / (d + 1)))
+
+        matches = set()
+        for i in xrange(0, len(p), k):
+            seed_start = min(i, len(p) - k)
+            seed = p[seed_start:seed_start + k]
+            s_pos = b.bwmatch(seed)
+
+            for pos in s_pos:
+                start = pos - seed_start
+                if not start in matches and match(s, start, p, d):
+                    matches.add(start)
+        res += [x for x in matches]
+    res.sort()
+    return res
+
+
 s = raw_input() + '$'
 patterns = raw_input().split(' ')
 d = int(raw_input())
 
-b = BWT(s)
+with Timer() as t:
+    res = find_approximate_matches(s, patterns, d)
+    print ' '.join([str(x) for x in res])
+print t
 
-for p in patterns:
-    seeds = [p[i:i + d + 1] for i in xrange(len(p) - d)]
-    print seeds
-
-# res = []
-# while True:
-#     p = raw_input()
-#     if not p: break
-#     res += b.bwmatch(p)
-# res.sort()
-# print ' '.join([str(x) for x in res])
-
-# with open('/Users/evgeny/Downloads/patternMatch.txt', 'r') as f:
-#     f.readline()
-#     s = f.readline().strip() + '$'
-#     b = BWT(s)
-#     print 'BWT done'
+# with Timer() as t:
+#     with open('/Users/evgeny/Downloads/approximateMatching.txt', 'r') as f:
+#         f.readline() # Input:
+#         s = f.readline().strip() + '$'
+#         patterns = f.readline().strip().split(' ')
+#         d = int(f.readline().strip())
+#         f.readline() # Output:
+#         exp = [int(x) for x in f.readline().strip().split(' ')]
 #
-#     res = []
-#     while True:
-#         p = f.readline().strip()
-#         if p == 'Output:':
-#             break
-#         m = b.bwmatch(p)
-#         for x in m:
-#             assert s[x:x + len(p)] == p, "Invalid match for %s (%d reported), but was %s" % (p, x, s[x:x + len(p)])
-#         res += m
-#     res.sort()
-#
-#     exp = [int(x) for x in f.readline().strip().split(' ')]
-#     assert exp == res, "Expected \n%s\n, but was \n%s" % (str(exp), str(res))
+#         res = find_approximate_matches(s, patterns, d)
+#         assert exp == res, "Expected \n%s\n, but was \n%s" % (str(exp), str(res))
+# print t
