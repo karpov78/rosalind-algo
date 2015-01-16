@@ -1,7 +1,14 @@
-def fib(n):
-    if n == 1 or n == 2:
+fib_cache = {}
+
+
+def fib(f_index):
+    if f_index == 1 or f_index == 2:
         return 1
-    return fib(n - 1) + k * fib(n - 2)
+    if f_index in fib_cache:
+        return fib_cache[f_index]
+    f = fib(f_index - 1) + fib(f_index - 2)
+    fib_cache[f_index] = f
+    return f
 
 
 if __name__ == '__main__':
