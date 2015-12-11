@@ -1,4 +1,4 @@
-from util import test_data
+from util import test_data, swap
 
 class Heap:
     def __init__(self, length):
@@ -19,9 +19,7 @@ class Heap:
         while (idx >> 1) > 0:
             p = idx >> 1
             if self.heap[p] < self.heap[idx]:
-                t = self.heap[p]
-                self.heap[p] = self.heap[idx]
-                self.heap[idx] = t
+                swap(self.heap, p, idx)
             idx = p
 
     def validate(self):
