@@ -29,14 +29,18 @@ def max_pairs(n1, n2):
     return fact(n_max) / fact(n_max - n_min)
 
 
+def get_spectre(s):
+    spectre = {'A': 0, 'U': 0, 'C': 0, 'G': 0}
+    for c in s:
+        spectre[c] += 1
+    return spectre
+
+
 if __name__ == '__main__':
     s = readDNAs()[0][1]
     print s
 
-    spectre = {'A': 0, 'U': 0, 'C': 0, 'G': 0}
-    for c in s:
-        spectre[c] += 1
-
+    spectre = get_spectre(s)
     au_pairs = max_pairs(spectre['A'], spectre['U'])
     cg_pairs = max_pairs(spectre['C'], spectre['G'])
     print au_pairs * cg_pairs
