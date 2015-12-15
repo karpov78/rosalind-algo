@@ -41,3 +41,14 @@ def read_dgraph_to_map(_file):
         _start, _end = (int(x) for x in _file.readline().split())
         _map[_start].append(_end)
     return _map
+
+
+def read_weighted_dgraph_to_map(_file):
+    _nodes, _edges = (int(x) for x in _file.readline().split())
+    _map = dict()
+    for _n in xrange(_nodes):
+        _map[_n + 1] = []
+    for _i in xrange(_edges):
+        _start, _end, _weight = (int(x) for x in _file.readline().split())
+        _map[_start].append((_end, _weight))
+    return _map
