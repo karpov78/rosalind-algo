@@ -4,7 +4,7 @@ def par(_a, _pivot = 0):
     last = len(_a) - 1
     i = 1
     while i <= last:
-        if _a[i] <= a[i - 1]:
+        if _a[i] <= _a[i - 1]:
             swap(_a, i - 1, i)
             i += 1
         elif i != last:
